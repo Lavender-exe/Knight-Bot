@@ -20,9 +20,12 @@ from interactions import (
     ParagraphText,
     ModalContext,
     ScheduledEvent,
-    Timestamp,
+    ScheduledEventPrivacyLevel,
+    ScheduledEventStatus,
+    listen,
 )
 
+from datetime import datetime
 from dotenv import load_dotenv
 from config.logging import info, exception_error
 from config.git_update import origin
@@ -38,9 +41,10 @@ bot = Client(
     debug_scope=DEBUG_ID,
     scope=GUILD_ID,
     status=Status.ONLINE,
-    activity="/help | whiteknightlabs.com",
+    activity="https://whiteknightlabs.com",
     disable_dm_commands=True,
 )
+
 bot.load_extension("interactions.ext.jurigged")
 
 
@@ -128,44 +132,73 @@ async def create_course_function(ctx: SlashContext,
         exception_error(e)
 
 
-@slash_command(
-    name="schedule_event",
-    description="Shedule an event",
-    default_member_permissions=(Permissions.MANAGE_EVENTS | Permissions.ADMINISTRATOR),
-)
-# WIP - Add start date and end date
-async def create_event_function(ctx: SlashContext):
-    '''Schedule a new event'''
-    modal = Modal(
-        ShortText(
-            label="Title",
-            custom_id="event_title",
-            placeholder="Advanced Red Team Operator",
-            required=True
-        ),
-        ParagraphText(
-            label="Description",
-            custom_id="event_description",
-            placeholder="Advanced Red Team Operator",
-            required=True
-        ),
-        custom_id="create_event",
-        title="Create Event",
-    )
+# @slash_command(
+#     name="schedule_event",
+#     description="Shedule an event",
+#     default_member_permissions=(Permissions.MANAGE_EVENTS | Permissions.ADMINISTRATOR),
+# )
 
-    await ctx.send_modal(modal=modal)
-    modal_ctx: ModalContext = await ctx.bot.wait_for_modal(modal)
+# async def create_event_function(ctx: SlashContext):
+#     '''Schedule a new event'''
+#     modal = Modal(
+#         ShortText(
+#             label="Title",
+#             custom_id="event_title",
+#             placeholder="Offensive Developer",
+#             required=True
+#         ),
+#         ParagraphText(
+#             label="Description",
+#             custom_id="event_description",
+#             placeholder="Insert an event description here",
+#             required=True
+#         ),
+#         ShortText(
+#             label="Start Time",
+#             custom_id="start_time",
+#             placeholder="2023-08-13",
+#             required=True
+#         ),
+#         ShortText(
+#             label="End Time",
+#             custom_id="end_time",
+#             placeholder="2023-08-14",
+#             required=True
+#         ),
+#         custom_id="create_event",
+#         title="Create Event",
+#     )
 
-    title = modal_ctx.responses["event_title"]
-    description = modal_ctx.responses["event_description"]
-    await modal_ctx.send(f"Short text: {title}, Paragraph text: {description}", ephemeral=True)
+#     await ctx.send_modal(modal=modal)
+#     modal_ctx: ModalContext = await ctx.bot.wait_for_modal(modal)
+
+#     title = modal_ctx.responses["event_title"]
+#     description = modal_ctx.responses["event_description"]
+#     start_time: str = modal_ctx.responses["start_time"]
+#     end_time: str = modal_ctx.responses["end_time"]
+#     start_time = datetime.strptime(start_time, "%Y-%m-%d")
+#     end_time = datetime.strptime(end_time, "%Y-%m-%d")
+
+#     ScheduledEvent(
+#         guild_id=DEBUG_ID,
+#         name=title,
+#         description=description,
+#         start_time=start_time,
+#         end_time=end_time,
+#         privacy_level=ScheduledEventPrivacyLevel.GUILD_ONLY,
+#         status=ScheduledEventStatus.SCHEDULED,
+#         entity_type=3,
+#         client=,
+#         id=1
+#     )
 
 
-# Add a update functionality to update the bot using git (From config/git_update.py) 
+# DEBUG COMMANDS
 @slash_command(
     name="update_repo",
     description="Update Bot Repo",
     scopes=[DEBUG_ID],
+    default_member_permissions=Permissions.ADMINISTRATOR
 )
 async def update_repo(ctx):
     '''Updates the bot if the scope is within the dev server'''

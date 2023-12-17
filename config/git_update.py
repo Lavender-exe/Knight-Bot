@@ -1,4 +1,4 @@
-from git import Repo
+import git
 
-repo = Repo(".")
+repo = git.Repo(".")
 origin = repo.remote(name='origin')
