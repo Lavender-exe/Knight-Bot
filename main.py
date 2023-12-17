@@ -116,14 +116,16 @@ async def create_course_function(ctx: SlashContext,
         category_check_exists = interactions.utils.get(guild.channels, name=category_name)
         if category_check_exists is None:
             category = await guild.create_category(category_name, position=5)
-            await category.set_permission(role, read_message_history=True, send_messages=True)
+            await category.set_permission(role, read_message_history=True, 
+                                          send_messages=True, view_channel=True)
             await category.set_permission(
-                guild.default_role, read_message_history=False, send_messages=False)
+                guild.default_role, read_message_history=False,
+                send_messages=False, view_channel=False)
         else:
             category = category_check_exists
 
         for channel_type in ['general', 'resources', 'troubleshooting']:
-            channel_check_exists = interactions.utils.get(guild.channels, 
+            channel_check_exists = interactions.utils.get(guild.channels,
                                                           name=channel_type, category=category_name)
             if channel_check_exists is None:
                 await category.create_text_channel(channel_type)
