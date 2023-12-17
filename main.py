@@ -202,7 +202,7 @@ async def create_course_function(ctx: SlashContext,
 )
 async def update_repo(ctx):
     '''Updates the bot if the scope is within the dev server'''
-    origin.pull()
+    origin.fetch()
     await ctx.send("**Updating Repo**")
 
 
