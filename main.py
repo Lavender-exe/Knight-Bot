@@ -41,7 +41,7 @@ bot = Client(
     debug_scope=DEBUG_ID,
     scope=GUILD_ID,
     status=Status.ONLINE,
-    activity="https://whiteknightlabs.com",
+    activity="whiteknightlabs.com",
     disable_dm_commands=True,
 )
 
@@ -89,7 +89,7 @@ async def help_command(ctx):
 )
 
 async def create_course_function(ctx: SlashContext,
-                                 course_name: SlashCommandChoice, course_date: int):
+                                 course_name: SlashCommandChoice, course_date: SlashCommandChoice):
     """Create Course Category with Role and Channels"""
     try:
         current_date = course_date
@@ -204,6 +204,7 @@ async def update_repo(ctx):
     '''Updates the bot if the scope is within the dev server'''
     origin.pull()
     await ctx.send("**Updating Repo**")
+
 
 if __name__ == "__main__":
     info("Bot is Running")
