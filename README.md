@@ -10,4 +10,5 @@ pip install -r requirements.txt
 touch .env
 echo "BOT_TOKEN=TOKEN HERE"
 echo "PROD=GUILD ID HERE"
+echo "DEV=GUILD ID HERE"
 ```
