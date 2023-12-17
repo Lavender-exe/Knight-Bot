@@ -15,17 +15,17 @@ from interactions import (
     Permissions,
     Color,
     Status,
-    Modal,
-    ShortText,
-    ParagraphText,
-    ModalContext,
-    ScheduledEvent,
-    ScheduledEventPrivacyLevel,
-    ScheduledEventStatus,
-    listen,
+    # Modal,
+    # ShortText,
+    # ParagraphText,
+    # ModalContext,
+    # ScheduledEvent,
+    # ScheduledEventPrivacyLevel,
+    # ScheduledEventStatus,
+    # listen,
 )
 
-from datetime import datetime
+# from datetime import datetime
 from dotenv import load_dotenv
 from config.logging import info, exception_error
 from config.git_update import origin
@@ -38,7 +38,7 @@ GUILD_ID = os.getenv("GUILD")
 
 bot = Client(
     intents=Intents.DEFAULT,
-    debug_scope=DEBUG_ID,
+    # debug_scope=DEBUG_ID, # Enable when debugging
     scope=GUILD_ID,
     status=Status.ONLINE,
     activity="whiteknightlabs.com",
@@ -53,6 +53,7 @@ bot.load_extension("interactions.ext.jurigged")
     description="Display help information",
     default_member_permissions=(Permissions.MANAGE_CHANNELS | Permissions.MANAGE_ROLES),
 )
+
 async def help_command(ctx):
     """Help Function"""
     embed = interactions.Embed(
@@ -89,7 +90,7 @@ async def help_command(ctx):
 )
 
 async def create_course_function(ctx: SlashContext,
-                                 course_name: SlashCommandChoice, course_date: SlashCommandChoice):
+                                 course_name: SlashCommandChoice, course_date: str):
     """Create Course Category with Role and Channels"""
     try:
         current_date = course_date
@@ -114,7 +115,7 @@ async def create_course_function(ctx: SlashContext,
             role = role_check_exists
         category_check_exists = interactions.utils.get(guild.channels, name=category_name)
         if category_check_exists is None:
-            category = await guild.create_category(category_name, position=6)
+            category = await guild.create_category(category_name, position=5)
             await category.set_permission(role, read_message_history=True, send_messages=True)
             await category.set_permission(
                 guild.default_role, read_message_history=False, send_messages=False)

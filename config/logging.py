@@ -1,19 +1,6 @@
 import logging
-import os
 from rich.logging import RichHandler
-
-log_path = "config/logs"
-debug_path = "config/logs/debug_logs.log"
-session_path = "config/logs/session_logs.log"
-
-if not os.path.exists(log_path):
-    with open(log_path, 'w'): pass
-
-if not os.path.exists(debug_path):
-    with open(debug_path, 'w'): pass
-
-if not os.path.exists(session_path):
-    with open(session_path, 'w'): pass
+from config.__init__ import debug_path, session_path
 
 
 logging.basicConfig(
@@ -28,6 +15,7 @@ logging.basicConfig(
 )
 
 log = logging.getLogger("rich")
+
 
 def error(function):
     log.error(f"[red on grey]{function}[/red on grey]", extra={"markup": True})
