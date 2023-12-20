@@ -38,7 +38,7 @@ GUILD_ID = os.getenv("GUILD")
 
 bot = Client(
     intents=Intents.DEFAULT,
-    # debug_scope=DEBUG_ID, # Enable when debugging
+    debug_scope=DEBUG_ID, # Enable when debugging
     scope=GUILD_ID,
     status=Status.ONLINE,
     activity="whiteknightlabs.com",
@@ -116,8 +116,18 @@ async def create_course_function(ctx: SlashContext,
         category_check_exists = interactions.utils.get(guild.channels, name=category_name)
         if category_check_exists is None:
             category = await guild.create_category(category_name, position=5)
-            await category.set_permission(role, read_message_history=True, 
+            
+            # @Course Role
+            await category.set_permission(role, read_message_history=True,
                                           send_messages=True, view_channel=True)
+                                          
+            # @Moderators
+            mod_role = interactions.utils.get(guild.roles, name="Moderators")
+            await category.set_permission(
+                mod_role, read_message_history=True, manage_messages=True,
+                send_messages=True, view_channel=True, manage_nicknames=True)
+            
+            # @everyone
             await category.set_permission(
                 guild.default_role, read_message_history=False,
                 send_messages=False, view_channel=False)
